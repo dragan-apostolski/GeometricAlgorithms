@@ -1,6 +1,55 @@
 package GeometricAlgorithms;
 
+import java.util.*;
+
 public class LineSegments {
+
+    /**
+     * This method checks if there is an intersection between any two segments in the given set, returns {@code true}
+     * if so, false otherwise.
+     * For the method to work correctly, every point in the segments should be defined as either left or right endpoint
+     * of that segment. Sides of a point are represented via the {@link Side} enumeration.
+     *
+     * The running time of this algorithm implementation is O(n*log(n)), where n is the number of segments in the set.
+     *
+     * @param segments a set of segments
+     * @return true if any two segments in the set intersect, false otherwise
+     */
+
+    public static boolean anySegmentIntersects(Set<Segment> segments){
+        HashMap<Point, Segment> mappings = new HashMap<>();
+        List<Point> points = new ArrayList<>();
+        initComponents(segments, points, mappings);
+
+        TreeSet<Point> status = new TreeSet<>(Comparator.comparing(Point::getY));
+        for (Point point : points) {
+            if(point.side == Side.left){
+                status.add(point);
+                Segment s = mappings.get(point);
+                Segment above = mappings.get(status.higher(point));
+                Segment below = mappings.get(status.lower(point));
+                if((above != null && segmentsIntersect(s, above)) || (below != null && segmentsIntersect(s, below)))
+                    return true;
+            }
+            else{
+                Segment above = mappings.get(status.higher(point));
+                Segment below = mappings.get(status.lower(point));
+                if(above != null && below != null && segmentsIntersect(above, below))
+                    return true;
+                status.remove(point);
+            }
+        }
+        return false;
+    }
+
+    private static void initComponents(Set<Segment> segments, List<Point> points, HashMap<Point, Segment> mappings) {
+        segments.forEach(segment -> {
+            List<Point> segmentPoints = segment.getPoints();
+            points.addAll(segmentPoints);
+            segmentPoints.forEach(point -> mappings.put(point, segment));
+        });
+        points.sort(Comparator.comparing(Point::getX).thenComparing(Point::getSide).thenComparing(Point::getY));
+    }
 
 
     /**
@@ -43,8 +92,8 @@ public class LineSegments {
     }
 
     private static double direction(Point Pi, Point Pj, Point Pk){
-        Point PkPrime = new Point(Pk.x - Pi.x, Pk.y - Pi.y);
-        Point PjPrime = new Point(Pj.x - Pi.x, Pj.y - Pi.y);
+        Point PkPrime = new Point(Pk.x - Pi.x, Pk.y - Pi.y, Side.left);
+        Point PjPrime = new Point(Pj.x - Pi.x, Pj.y - Pi.y, Side.right);
         return crossProduct(PkPrime, PjPrime);
     }
 
