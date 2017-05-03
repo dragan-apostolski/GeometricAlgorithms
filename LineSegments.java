@@ -15,7 +15,6 @@ public class LineSegments {
      * @param segments a set of segments
      * @return true if any two segments in the set intersect, false otherwise
      */
-
     public static boolean anySegmentIntersects(Set<Segment> segments){
         HashMap<Point, Segment> mappings = new HashMap<>();
         List<Point> points = new ArrayList<>();
