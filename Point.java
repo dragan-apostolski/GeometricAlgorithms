@@ -1,12 +1,6 @@
 package GeometricAlgorithms;
 
-
-enum Side{
-    left,
-    right
-}
-
-public class Point {
+public final class Point {
     double x;
     double y;
     Side side;
@@ -15,6 +9,12 @@ public class Point {
         this.x = x;
         this.y = y;
         this.side = side;
+    }
+
+    public Point(double x, double y){
+        this.x = x;
+        this.y = y;
+        this.side = null;
     }
 
     public double getX() {
@@ -26,11 +26,17 @@ public class Point {
     }
 
     public int getSide(){
-        return (side == Side.left) ? 0 : 1;
+        return (side == Side.LEFT) ? 0 : 1;
     }
 
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Point p2 = (Point) obj;
+        return x == p2.x && y == p2.y;
     }
 }

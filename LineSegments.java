@@ -7,7 +7,7 @@ public class LineSegments {
     /**
      * This method checks if there is an intersection between any two segments in the given set, returns {@code true}
      * if so, false otherwise.
-     * For the method to work correctly, every point in the segments should be defined as either left or right endpoint
+     * For the method to work correctly, every point in the segments should be defined as either LEFT or RIGHT endpoint
      * of that segment. Sides of a point are represented via the {@link Side} enumeration.
      *
      * The running time of this algorithm implementation is O(n*log(n)), where n is the number of segments in the set.
@@ -22,7 +22,7 @@ public class LineSegments {
 
         TreeSet<Point> status = new TreeSet<>(Comparator.comparing(Point::getY));
         for (Point point : points) {
-            if(point.side == Side.left){
+            if(point.side == Side.LEFT){
                 status.add(point);
                 Segment s = mappings.get(point);
                 Segment above = mappings.get(status.higher(point));
@@ -54,7 +54,7 @@ public class LineSegments {
     /**
      * This method computes whether two line segments s1 and s2 intersect. It calls subroutines
      * direction, which computes the relative orientations using the cross product method, and
-     * onSegment, which determines whether a point that is colinear with a segment lies on that
+     * onSegment, which determines whether a point that is collinear with a segment lies on that
      * segment.
      *
      * @param s1 the first line segment
@@ -90,9 +90,21 @@ public class LineSegments {
                 && (Pk.y >= Math.min(Pi.y, Pj.y) && Pk.y <= Math.max(Pi.y, Pj.y));
     }
 
-    private static double direction(Point Pi, Point Pj, Point Pk){
-        Point PkPrime = new Point(Pk.x - Pi.x, Pk.y - Pi.y, Side.left);
-        Point PjPrime = new Point(Pj.x - Pi.x, Pj.y - Pi.y, Side.right);
+    /**
+     * Returns the direction of point Pk in terms of the line segment formed by points Pi
+     * (LEFT endpoint) and Pj (RIGHT endpoint). If the return value is negative, Pk is LEFT
+     * from the line segment (counter-clockwise), if the return value is 0, Pk is collinear
+     * with the line segment, and if the return value is positive, Pk is RIGHT from the line
+     * segment (clockwise).
+     *
+     * @param Pi the LEFT endpoint of the line segment
+     * @param Pj the RIGHT endpoint of the line segment
+     * @param Pk the point who's direction in terms of the line segment Pi - Pj is being questioned
+     * @return negative value if CCW, 0 if collinear, positive value if CW
+     */
+    static double direction(Point Pi, Point Pj, Point Pk){
+        Point PkPrime = new Point(Pk.x - Pi.x, Pk.y - Pi.y, Side.LEFT);
+        Point PjPrime = new Point(Pj.x - Pi.x, Pj.y - Pi.y, Side.RIGHT);
         return crossProduct(PkPrime, PjPrime);
     }
 

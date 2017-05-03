@@ -3,7 +3,7 @@ package GeometricAlgorithms;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Segment {
+public final class Segment {
     Point p1;
     Point p2;
 
