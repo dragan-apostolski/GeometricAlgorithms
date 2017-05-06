@@ -1,8 +1,8 @@
 package GeometricAlgorithms.test;
 
 
-import GeometricAlgorithms.ConvexHull;
-import GeometricAlgorithms.Point;
+import GeometricAlgorithms.Utils.ConvexHull;
+import GeometricAlgorithms.Structures.Point;
 
 import java.util.HashSet;
 import java.util.Set;

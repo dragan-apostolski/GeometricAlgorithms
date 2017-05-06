@@ -1,4 +1,4 @@
-package GeometricAlgorithms;
+package GeometricAlgorithms.Structures;
 
 public enum Side{
     LEFT,

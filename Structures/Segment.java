@@ -1,4 +1,4 @@
-package GeometricAlgorithms;
+package GeometricAlgorithms.Structures;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,19 @@ public final class Segment {
         this.p2 = p2;
     }
 
-    List<Point> getPoints(){
+    public List<Point> getPoints(){
         List<Point> points = new ArrayList<>();
         points.add(p1);
         points.add(p2);
         return points;
+    }
+
+    public Point getP1() {
+        return p1;
+    }
+
+    public Point getP2() {
+        return p2;
     }
 
     @Override

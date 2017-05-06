@@ -1,4 +1,6 @@
-package GeometricAlgorithms;
+package GeometricAlgorithms.Utils;
+
+import GeometricAlgorithms.Structures.Point;
 
 import java.util.*;
 
@@ -80,8 +82,8 @@ public class ConvexHull {
             if(p1 == p2 || p1.equals(p2))
                 return 0;
 
-            double thetaA = Math.atan2((long)p1.y - lowest.y, (long)p1.x - lowest.x);
-            double thetaB = Math.atan2((long)p2.y - lowest.y, (long)p2.x - lowest.x);
+            double thetaA = Math.atan2((long)p1.getY() - lowest.getY(), (long)p1.getX() - lowest.getX());
+            double thetaB = Math.atan2((long)p2.getY() - lowest.getY(), (long)p2.getX() - lowest.getX());
 
             if (thetaA < thetaB)
                 return -1;
@@ -110,7 +112,7 @@ public class ConvexHull {
     }
 
     private static double distance(Point p1, Point p2){
-        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+        return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2) + Math.pow(p2.getY() - p1.getY(), 2));
     }
 
 }

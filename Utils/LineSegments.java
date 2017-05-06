@@ -1,4 +1,8 @@
-package GeometricAlgorithms;
+package GeometricAlgorithms.Utils;
+
+import GeometricAlgorithms.Structures.Point;
+import GeometricAlgorithms.Structures.Segment;
+import GeometricAlgorithms.Structures.Side;
 
 import java.util.*;
 
@@ -22,7 +26,7 @@ public class LineSegments {
 
         TreeSet<Point> status = new TreeSet<>(Comparator.comparing(Point::getY));
         for (Point point : points) {
-            if(point.side == Side.LEFT){
+            if(point.getSide() == Side.LEFT){
                 status.add(point);
                 Segment s = mappings.get(point);
                 Segment above = mappings.get(status.higher(point));
@@ -47,7 +51,7 @@ public class LineSegments {
             points.addAll(segmentPoints);
             segmentPoints.forEach(point -> mappings.put(point, segment));
         });
-        points.sort(Comparator.comparing(Point::getX).thenComparing(Point::getSide).thenComparing(Point::getY));
+        points.sort(Comparator.comparing(Point::getX).thenComparing(Point::getSideAsInt).thenComparing(Point::getY));
     }
 
 
@@ -62,10 +66,10 @@ public class LineSegments {
      * @return true if line segments s1 and s2 intersect, false otherwise
      */
     public static boolean segmentsIntersect(Segment s1, Segment s2){
-        Point p1 = s1.p1;
-        Point p2 = s1.p2;
-        Point p3 = s2.p1;
-        Point p4 = s2.p2;
+        Point p1 = s1.getP1();
+        Point p2 = s1.getP2();
+        Point p3 = s2.getP1();
+        Point p4 = s2.getP2();
         double d1 = direction(p3, p4, p1);
         double d2 = direction(p3, p4, p2);
         double d3 = direction(p1, p2, p3);
@@ -86,8 +90,8 @@ public class LineSegments {
     }
 
     private static boolean onSegment(Point Pi, Point Pj, Point Pk){
-        return (Pk.x >= Math.min(Pi.x, Pj.x) && Pk.x <= Math.max(Pi.x, Pj.x))
-                && (Pk.y >= Math.min(Pi.y, Pj.y) && Pk.y <= Math.max(Pi.y, Pj.y));
+        return (Pk.getX() >= Math.min(Pi.getX(), Pj.getX()) && Pk.getX() <= Math.max(Pi.getX(), Pj.getX()))
+                && (Pk.getY() >= Math.min(Pi.getY(), Pj.getY()) && Pk.getY() <= Math.max(Pi.getY(), Pj.getY()));
     }
 
     /**
@@ -103,12 +107,12 @@ public class LineSegments {
      * @return negative value if CCW, 0 if collinear, positive value if CW
      */
     static double direction(Point Pi, Point Pj, Point Pk){
-        Point PkPrime = new Point(Pk.x - Pi.x, Pk.y - Pi.y, Side.LEFT);
-        Point PjPrime = new Point(Pj.x - Pi.x, Pj.y - Pi.y, Side.RIGHT);
+        Point PkPrime = new Point(Pk.getX() - Pi.getX(), Pk.getY() - Pi.getY(), Side.LEFT);
+        Point PjPrime = new Point(Pj.getX() - Pi.getX(), Pj.getY() - Pi.getY(), Side.RIGHT);
         return crossProduct(PkPrime, PjPrime);
     }
 
     private static double crossProduct(Point p1, Point p2){
-        return (p1.x * p2.y) - (p2.x * p1.y);
+        return (p1.getX() * p2.getY()) - (p2.getX() * p1.getY());
     }
 }

@@ -1,9 +1,9 @@
 package GeometricAlgorithms.test;
 
-import GeometricAlgorithms.LineSegments;
-import GeometricAlgorithms.Point;
-import GeometricAlgorithms.Segment;
-import GeometricAlgorithms.Side;
+import GeometricAlgorithms.Utils.LineSegments;
+import GeometricAlgorithms.Structures.Point;
+import GeometricAlgorithms.Structures.Segment;
+import GeometricAlgorithms.Structures.Side;
 
 import java.util.*;
 
@@ -18,7 +18,6 @@ public class LineSegmentTester {
     @Test
     public static void anySegmentsIntersectTest(){
         /*
-
         6 |     f
         5 | a
         4 |          d
