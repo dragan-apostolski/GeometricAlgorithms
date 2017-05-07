@@ -107,8 +107,8 @@ public class LineSegments {
      * @return negative value if CCW, 0 if collinear, positive value if CW
      */
     static double direction(Point Pi, Point Pj, Point Pk){
-        Point PkPrime = new Point(Pk.getX() - Pi.getX(), Pk.getY() - Pi.getY(), Side.LEFT);
-        Point PjPrime = new Point(Pj.getX() - Pi.getX(), Pj.getY() - Pi.getY(), Side.RIGHT);
+        Point PkPrime = new Point(Pk.getX() - Pi.getX(), Pk.getY() - Pi.getY());
+        Point PjPrime = new Point(Pj.getX() - Pi.getX(), Pj.getY() - Pi.getY());
         return crossProduct(PkPrime, PjPrime);
     }
 

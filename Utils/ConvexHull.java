@@ -18,8 +18,11 @@ public class ConvexHull {
      * O(n*log(n)) time, and returns a list of points contained in the convex hull in counter-clockwise
      * order.
      *
+     * A {@link IllegalArgumentException} is thrown if less than three points are provided in the set.
+     *
      * @param points a set of points in the 2D coordinate system
      * @return a CCW ordered list of points containing the convex hull
+     * @throws IllegalArgumentException if less than three points are provided
      */
     public static List<Point> convexHull(Set<Point> points){
         if(points.size() < 3) throw new IllegalArgumentException("At least three points must provided");
@@ -36,9 +39,14 @@ public class ConvexHull {
      *
      * @param points a set of points in the 2D coordinate system
      * @return a stack which contains the points of the convex hull
+     * @throws IllegalArgumentException if the set contains less than three unique points
      */
     private static Stack<Point> grahamScan(Set<Point> points){
         List<Point> sortedPoints = new ArrayList<>(sortedPointsSet(points));
+
+        if(sortedPoints.size() < 3) throw new IllegalArgumentException("At least three unique points must be provided");
+        if(pointsAreCollinear(sortedPoints)) throw new IllegalArgumentException("Points must not be collinear");
+
         Stack<Point> stack = new Stack<>();
         stack.push(sortedPoints.get(0));
         stack.push(sortedPoints.get(1));
@@ -66,9 +74,22 @@ public class ConvexHull {
                     break;
                 }
             }
-
         }
         return stack;
+    }
+
+    private static boolean pointsAreCollinear(List<Point> points){
+
+        Point p0 = points.get(0);
+        Point p1 = points.get(1);
+
+        for (int i = 2; i < points.size(); i++) {
+            Point pi = points.get(i);
+            if(getAngleDirection(p0, p1, pi) != AngleDirection.COLLINEAR)
+                return false;
+        }
+
+        return true;
     }
 
 
@@ -78,16 +99,17 @@ public class ConvexHull {
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
 
+
         TreeSet<Point> sortedPointSet = new TreeSet<>((p1, p2) -> {
             if(p1 == p2 || p1.equals(p2))
                 return 0;
 
-            double thetaA = Math.atan2((long)p1.getY() - lowest.getY(), (long)p1.getX() - lowest.getX());
-            double thetaB = Math.atan2((long)p2.getY() - lowest.getY(), (long)p2.getX() - lowest.getX());
+            double thetaP1 = Math.atan2((long)p1.getY() - lowest.getY(), (long)p1.getX() - lowest.getX());
+            double thetaP2 = Math.atan2((long)p2.getY() - lowest.getY(), (long)p2.getX() - lowest.getX());
 
-            if (thetaA < thetaB)
+            if (thetaP1 < thetaP2)
                 return -1;
-            else if (thetaA > thetaB)
+            else if (thetaP1 > thetaP2)
                 return 1;
             else{
                 // collinear with the 'lowest' point, let the point closest to it come first
@@ -95,7 +117,8 @@ public class ConvexHull {
                 double distanceP2 = distance(p2, lowest);
 
                 if(distanceP1 < distanceP2) return -1;
-                else return 1;
+                else if(distanceP2 < distanceP1 )return 1;
+                else return (int)LineSegments.direction(lowest, p1, p2);
             }
         });
         sortedPointSet.addAll(points);
