@@ -15,8 +15,16 @@ import static org.hamcrest.CoreMatchers.is;
 public class LineSegmentTester {
 
 
+    @Test(expected = IllegalArgumentException.class)
+    public void expectedExceptionTest(){
+        Set<Segment> segments = new HashSet<>();
+        segments.add(new Segment(new Point(2, 3, Side.LEFT), new Point(4, 5, Side.RIGHT)));
+        System.out.println(LineSegments.anySegmentIntersects(segments));
+    }
+
+
     @Test
-    public static void anySegmentsIntersectTest(){
+    public void anySegmentsIntersectTest(){
         /*
         6 |     f
         5 | a
@@ -42,7 +50,7 @@ public class LineSegmentTester {
     }
 
     @Test
-    public static void segmentsIntersectTest(){
+    public void segmentsIntersectTest(){
 
 
          /*
@@ -85,12 +93,5 @@ public class LineSegmentTester {
         Assert.assertThat(LineSegments.segmentsIntersect(ab, ef), is(false));
         Assert.assertThat(LineSegments.segmentsIntersect(ad, cb), is(false));
         Assert.assertThat(LineSegments.segmentsIntersect(cf, eb), is(true));
-    }
-
-
-
-    public static void main(String[] args) {
-        anySegmentsIntersectTest();
-        segmentsIntersectTest();
     }
 }

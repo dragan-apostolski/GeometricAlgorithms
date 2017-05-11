@@ -108,4 +108,17 @@ public class ConvexHullTester {
 
         Assert.assertEquals(expected, ConvexHull.convexHull(points));
     }
+
+    @Test
+    public void convexHullTester4(){
+
+        Point a = new Point(2, 2);
+        Point b = new Point(4, 2);
+        Point c = new Point(4, 4);
+        Point d = new Point(2, 4);
+
+        Set<Point> points = new HashSet<>(Arrays.asList(a, b, c, d));
+        List<Point> expected = Arrays.asList(a, b, c, d);
+        Assert.assertEquals(expected, ConvexHull.convexHull(points));
+    }
 }
