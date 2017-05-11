@@ -44,8 +44,10 @@ public class ConvexHull {
     private static Stack<Point> grahamScan(Set<Point> points){
         List<Point> sortedPoints = new ArrayList<>(sortedPointsSet(points));
 
-        if(sortedPoints.size() < 3) throw new IllegalArgumentException("At least three unique points must be provided");
-        if(pointsAreCollinear(sortedPoints)) throw new IllegalArgumentException("Points must not be collinear");
+        if(sortedPoints.size() < 3)
+            throw new IllegalArgumentException("At least three unique points must be provided");
+        if(pointsAreCollinear(sortedPoints))
+            throw new IllegalArgumentException("Points must not be collinear");
 
         Stack<Point> stack = new Stack<>();
         stack.push(sortedPoints.get(0));
@@ -104,8 +106,11 @@ public class ConvexHull {
             if(p1 == p2 || p1.equals(p2))
                 return 0;
 
-            double thetaP1 = Math.atan2((long)p1.getY() - lowest.getY(), (long)p1.getX() - lowest.getX());
-            double thetaP2 = Math.atan2((long)p2.getY() - lowest.getY(), (long)p2.getX() - lowest.getX());
+            Point p1Prime = new Point(p1.getX() - lowest.getX(), p1.getY() - lowest.getY());
+            Point p2Prime = new Point(p2.getX() - lowest.getX(), p2.getY() - lowest.getY());
+
+            double thetaP1 = Math.atan2(p1Prime.getY(), p1Prime.getX());
+            double thetaP2 = Math.atan2(p2Prime.getY(), p2Prime.getX());
 
             if (thetaP1 < thetaP2)
                 return -1;
@@ -117,8 +122,7 @@ public class ConvexHull {
                 double distanceP2 = distance(p2, lowest);
 
                 if(distanceP1 < distanceP2) return -1;
-                else if(distanceP2 < distanceP1 )return 1;
-                else return (int)LineSegments.direction(lowest, p1, p2);
+                else return 1;
             }
         });
         sortedPointSet.addAll(points);

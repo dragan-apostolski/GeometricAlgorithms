@@ -18,8 +18,13 @@ public class LineSegments {
      *
      * @param segments a set of segments
      * @return true if any two segments in the set intersect, false otherwise
+     * @throws IllegalArgumentException if the set contains less than two line segments
      */
     public static boolean anySegmentIntersects(Set<Segment> segments){
+
+        if(segments.size() < 2)
+            throw new IllegalArgumentException("At least 2 line segments must be provided");
+
         HashMap<Point, Segment> mappings = new HashMap<>();
         List<Point> points = new ArrayList<>();
         initComponents(segments, points, mappings);
